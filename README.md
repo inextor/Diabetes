@@ -1,6 +1,8 @@
 # axhrw
 Another XMLHttpRequest Wrapper
 
+
+##Basi usage
 ```js
 	promise = axhrw
 	({
