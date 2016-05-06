@@ -156,7 +156,7 @@ function axhrw( obj )
 
 
 		var parameters	= null;
-		var methods		= [ArrayBufferView , Blob, Document, FormData, String, ArrayBuffer, DOMString ];
+		var methods		= [Blob, Document, FormData, String, ArrayBuffer ];
 
 		if( obj.data )
 		{
