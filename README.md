@@ -11,7 +11,7 @@ Another XMLHttpRequest Wrapper
     		console.log( response );
     	}
 	});
-	```
+```
 	
 ##Other Options
 	
