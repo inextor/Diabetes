@@ -1,4 +1,4 @@
-/*
+*
 	var promise = axhrw
 	({
 
@@ -12,6 +12,7 @@
 		,requestHeaders		: { Content-type : 'text/html' }
 		,data				: xxxx
 		,responseType		: ''//arrayBuffer,blob,document,json,text
+		,dataType			: '' alias of responseType
 		,overrideMimeType	: ''//optional exampl 'text/plain; charset=utf-8'
 		,success			: function( response, status, responseHeaders )
 		,uploadFinish: function()
@@ -62,11 +63,10 @@ function axhrw( obj )
 		return str.join("&");
 	};
 
-	return new Promise(function(resolve,reject)
-	{
-		var xhr		= new XMLHttpRequest();
-		promise.xhr	=  xhr;
 
+	var xhr		= new XMLHttpRequest();
+	var promise = new Promise(function(resolve,reject)
+	{
 		xhr.open
 		(
 		 	obj.method 		|| 'GET'
@@ -88,8 +88,7 @@ function axhrw( obj )
 
 		xhr.withCredentials 	= obj.withCredentials	|| false;
 
-		if( obj.responseType )
-			xhr.responseType		= obj.responseType		|| '';
+		xhr.responseType		= obj.responseType	|| obj.dataType || '';
 
 		if( obj.overrideMimeType )
 			xhr.overrideMimeType( obj.overrideMimeType );
@@ -106,7 +105,7 @@ function axhrw( obj )
 
 		xhr.onreadystatechange = function(e)
 		{
-			if (this.readyState == 4)
+			if (xhr.readyState == 4)
 			{
 				if( xhr.status >= 200 && xhr.status < 300 )
 				{
@@ -156,7 +155,7 @@ function axhrw( obj )
 
 
 		var parameters	= null;
-		var methods		= [Blob, Document, FormData, String, ArrayBuffer ];
+		var methods		= [Blob, Document, FormData, String ];
 
 		if( obj.data )
 		{
@@ -178,4 +177,8 @@ function axhrw( obj )
 
 		xhr.send( parameters );
 	});
+
+	promise.xhr = xhr;
+
+	return promise;
 }
