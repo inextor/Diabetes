@@ -4,16 +4,16 @@ Another XMLHttpRequest Wrapper
 ```js
 	promise = axhrw
 	({
-		method				: 'POST'		//,'POST',...
-		,success			: function( response )
-    ,data         : 
-    {
-      
-    }
+		method		: 'POST'		//,'POST',...
+    	,data		: { hello : 'world' }
+    	,success	: function( response )
+    	{
+    		console.log( response );
+    	}
 	});
 	```
 	
-	Other Options
+##Other Options
 	
 	 timeout				: 3000 	
 		,method				: 'GET'		
