@@ -6,12 +6,13 @@ Another XMLHttpRequest Wrapper
 ```js
 	promise = axhrw
 	({
-		method		: 'POST'		//,'POST',...
-    	,data		: { hello : 'world' }
-    	,success	: function( response )
-    	{
-    		console.log( response );
-    	}
+		url			: 'http://google.com'
+		,method		: 'POST'		//,'POST',...
+		,data		: { hello : 'world' }
+		,success	: function( response )
+		{
+			console.log( response );
+		}
 	});
 ```
 	
