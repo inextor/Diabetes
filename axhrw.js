@@ -1,4 +1,4 @@
-*
+/*
 	var promise = axhrw
 	({
 
@@ -39,34 +39,11 @@
 */
 function axhrw( obj )
 {
-	var serialize = function(obj, prefix)
-	{
-		var p;
-		var str = [];
-
-		for(p in obj)
-		{
-			if (obj.hasOwnProperty(p))
-			{
-				var v = obj[p];
-			   	var is_obj = typeof v == "object";
-				var k = prefix ? prefix + "[" + (isNaN(+p) || is_obj ? p : '') + "]" : p;
-
-				str.push
-				(
-				 	is_obj ?
-						serialize( v, k ) :
-						encodeURIComponent( k ) + "=" + encodeURIComponent( v )
-				);
-			}
-		}
-		return str.join("&");
-	};
-
-
 	var xhr		= new XMLHttpRequest();
 	var promise = new Promise(function(resolve,reject)
 	{
+		var i;
+
 		xhr.open
 		(
 		 	obj.method 		|| 'GET'
@@ -80,7 +57,7 @@ function axhrw( obj )
 
 		if( obj.requestHeaders )
 		{
-			for(var i in obj.requestHeaders )
+			for(i in obj.requestHeaders )
 			{
 				xhr.setRequestHeader( i, obj.requestHeaders[ i ] );
 			}
@@ -96,12 +73,21 @@ function axhrw( obj )
 		xhr.addEventListener("progress"	, obj.progress );
 		xhr.addEventListener('error',function(e)
 		{
-			obj.error && obj.error( xhr, xhr.statusText, e );
+			if( obj.error )
+			{
+				obj.error( xhr, xhr.statusText, e );
+			}
+
 			reject({ xhr: xhr, status: xhr.statusText, error: e });
 		});
 
-		xhr.upload.addEventListener("progress", obj.uploadProgress);
-		xhr.upload.addEventListener("load", obj.uploadFinish );
+		if( obj.uploadProgress )
+			xhr.upload.addEventListener("progress", obj.uploadProgress);
+
+		if( obj.uploadFinish )
+		{
+			xhr.upload.addEventListener("load", obj.uploadFinish );
+		}
 
 		xhr.onreadystatechange = function(e)
 		{
@@ -109,41 +95,53 @@ function axhrw( obj )
 			{
 				if( xhr.status >= 200 && xhr.status < 300 )
 				{
-					if( xhr.responseType == "" || xhr.responseType == "text" )
+					if( xhr.responseType === "" || xhr.responseType == "text" )
 					{
-						obj.success && obj.success( xhr.responseText , xhr.statusText, xhr );
+						if( obj.success )
+							obj.success( xhr.responseText , xhr.statusText, xhr );
+
 						resolve( xhr.responseText );
 					}
 					else
 					{
-						obj.success && obj.success( xhr.response , xhr.statusText, xhr );
+						if( obj.success )
+							obj.success( xhr.response , xhr.statusText, xhr );
+
 						resolve( xhr.response );
 					}
 				}
 				else if( xhr.status >=300 && xhr.status< 400 )
 				{
 					//never happens but when it do make something
-					obj.error && obj.error( xhr, xhr.statusText, 'Redirection' );
+					if( obj.error )
+						obj.error( xhr, xhr.statusText, 'Redirection' );
+
 					reject( xhr );
 				}
 				else if( xhr.status > 400 && xhr.status < 500 )
 				{
-					obj.error && obj.error( xhr, xhr.statusText, 'Not found error' );
+					if( obj.error )
+						obj.error( xhr, xhr.statusText, 'Not found error' );
+
 					reject({ xhr: xhr, status:xhr.statusText, error: 'Not found error' });
 				}
 				else if(  xhr.status > 400 && xhr.status < 500 )
 				{
-					obj.error && obj.error( xhr, xhr.statusText, 'System server error' );
+					if( obj.error )
+						obj.error( xhr, xhr.statusText, 'System server error' );
+
 					reject( xhr );
 					reject({ xhr: xhr, status:xhr.statusText, error: 'System server Error' });
 				}
 				else
 				{
-					obj.error && obj.error( xhr, xhr.statusText, 'Unknown Error' );
+					if( obj.error )
+						obj.error( xhr, xhr.statusText, 'Unknown Error' );
+
 					reject({ xhr: xhr, status:xhr.statusText, error: 'Unknow error' });
 				}
 			}
-		}
+		};
 
 		xhr.addEventListener('abort',function(e)
 		{
@@ -159,7 +157,7 @@ function axhrw( obj )
 
 		if( obj.data )
 		{
-			for(var i=0;i<methods.length;i++)
+			for(i=0;i<methods.length;i++)
 			{
 				if( obj.data instanceof methods[i] )
 				{
@@ -170,6 +168,30 @@ function axhrw( obj )
 
 			if( !parameters )
 			{
+				var serialize = function(obj, prefix)
+				{
+					var p;
+					var str = [];
+
+					for(p in obj)
+					{
+						if (obj.hasOwnProperty(p))
+						{
+							var v = obj[p];
+						   	var is_obj = typeof v == "object";
+							var k = prefix ? prefix + "[" + (isNaN(+p) || is_obj ? p : '') + "]" : p;
+
+							str.push
+							(
+							 	is_obj ?
+									serialize( v, k ) :
+									encodeURIComponent( k ) + "=" + encodeURIComponent( v )
+							);
+						}
+					}
+					return str.join("&");
+				};
+
 				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 				parameters = serialize( obj.data );
 			}
