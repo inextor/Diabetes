@@ -1,26 +1,26 @@
 class Util
 {
-	addOnLoad(callback)
+	static addOnLoad(callback)
 	{
 		window.addEventListener('load', callback );
 	}
 
-	getById( selector )
+	static getById( selector )
 	{
 		return document.getElementById( selector );
 	}
 
-	getFirst( selector )
+	static getFirst( selector )
 	{
 		return document.querySelector( selector );
 	}
 
-	getAll(selector)
+	static getAll(selector)
 	{
 		return document.querySelectorAll( selector );
 	}
 
-	quoteattr(s, preserveCR)
+	static quoteattr(s, preserveCR)
 	{
 		let pCR = preserveCR ? '&#13;' : '\n';
 		return ('' + s) /* Forces the conversion to string. */
@@ -38,7 +38,7 @@ class Util
 			.replace(/[\r\n]/g, pCR);
 	}
 
-	fireChangeEvent(selector)
+	static fireChangeEvent(selector)
 	{
 		let element		= document.querySelector( selector );
 
