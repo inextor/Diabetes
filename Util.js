@@ -5,7 +5,7 @@ class Util
 		window.addEventListener('load', callback );
 	}
 
-	id( selector )
+	getById( selector )
 	{
 		return document.getElementById( selector );
 	}
@@ -78,88 +78,88 @@ class Util
 	/**
 	getPagination
 	({
-		   	totalRows           : parameters.data.data.total
-		   	,rowsPerPage        : 10
-		   	,currentPage        : page
-		   	,link_format        : '<a href="/galleryAlbum.html?id='+id+'&page=PAGE_NUMBER">PAGE_TITLE</a>'
+		   	totalRows		   : parameters.data.data.total
+		   	,rowsPerPage		: 10
+		   	,currentPage		: page
+		   	,link_format		: '<a href="/galleryAlbum.html?id='+id+'&page=PAGE_NUMBER">PAGE_TITLE</a>'
 		   	,current_page_format: '<a href="#" class="active">PAGE_TITLE</a>'
-		   	,nextTitle          : '&gt;&gt;'
-		   	,prevTitle          : '&lt;&lt;'
+		   	,nextTitle		  : '&gt;&gt;'
+		   	,prevTitle		  : '&lt;&lt;'
 		   	,disable_next_format: '<a href="#">PAGE_TITLE</a>'
 		   	,disable_prev_format: '<a href="#">PAGE_TITLE</a>'
 	});
 	*/
 	getPagination( obj )
 	{
-	    var nav     = '';
-	    var prev    = '';
-	    var next    = '';
+		var nav		= '';
+		var prev	= '';
+		var next	= '';
 		var page	= '';
 
-	    var pageNum = parseInt( obj.currentPage, 10);
-	    var maxPage = Math.ceil( parseInt( obj.totalRows, 10 )/ obj.rowsPerPage );
-	    var offset  = ( pageNum - 1) * parseInt( obj.rowsPerPage , 10) ;
-	    var search  = ['PAGE_NUMBER','PAGE_TITLE'];
+		var pageNum = parseInt( obj.currentPage, 10);
+		var maxPage = Math.ceil( parseInt( obj.totalRows, 10 )/ obj.rowsPerPage );
+		var offset  = ( pageNum - 1) * parseInt( obj.rowsPerPage , 10) ;
+		var search  = ['PAGE_NUMBER','PAGE_TITLE'];
 
-	    var start   = 0;
-	    var end     = 5;
+		var start   = 0;
+		var end	 = 5;
 
-	    if( pageNum > 5 )
-	    {
-	        start = pageNum - 5;
+		if( pageNum > 5 )
+		{
+			start = pageNum - 5;
 
 			if( (maxPage-pageNum) < 5 && maxPage >= 10 )
 			{
-	        	start = maxPage - 10;
+				start = maxPage - 10;
 			}
 
-	        if(pageNum < maxPage)
-	        {
-	            var nextPages = maxPage - pageNum;
-	            end       = nextPages > 5 ? pageNum+5 : pageNum+nextPages;
-	        }
-	        else
-	            end = maxPage;
-	    }
-	    else
-	    {
-	        start = 0;
-	        end   = maxPage<10 ? maxPage : 11;
-	    }
+			if(pageNum < maxPage)
+			{
+				var nextPages = maxPage - pageNum;
+				end	   = nextPages > 5 ? pageNum+5 : pageNum+nextPages;
+			}
+			else
+				end = maxPage;
+		}
+		else
+		{
+			start = 0;
+			end   = maxPage<10 ? maxPage : 11;
+		}
 
-	    for(page=start; page <end; page++)
-	    {
-	        //replace = array(page,page);
-	        var format  = page == pageNum ? obj.current_page_format : obj.link_format;
-	        nav    += format.split( 'PAGE_NUMBER' ).join( page ).split( 'PAGE_TITLE' ).join( (page+1) );
-	        //str_replace( search, replace , format );
-	    }
-	    if (pageNum > 0)
-	    {
-	        page = (pageNum - 1);
-	        prev = obj.link_format.split( 'PAGE_NUMBER').join( page ).split( 'PAGE_TITLE' ).join( obj.prevTitle );
-	        //str_replace( search ,array(page,"Previous"), link_format );
-	    }
-	    else
-	    {
-	        // we're on page one, don't print previous link
-	        prev = obj.disable_prev_format.split( 'PAGE_TITLE' ).join( obj.prevTitle );
-	    }
+		for(page=start; page <end; page++)
+		{
+			//replace = array(page,page);
+			var format  = page == pageNum ? obj.current_page_format : obj.link_format;
+			nav	+= format.split( 'PAGE_NUMBER' ).join( page ).split( 'PAGE_TITLE' ).join( (page+1) );
+			//str_replace( search, replace , format );
+		}
+		if (pageNum > 0)
+		{
+			page = (pageNum - 1);
+			prev = obj.link_format.split( 'PAGE_NUMBER').join( page ).split( 'PAGE_TITLE' ).join( obj.prevTitle );
+			//str_replace( search ,array(page,"Previous"), link_format );
+		}
+		else
+		{
+			// we're on page one, don't print previous link
+			prev = obj.disable_prev_format.split( 'PAGE_TITLE' ).join( obj.prevTitle );
+		}
 
-	    if (pageNum < maxPage-1)
-	    {
-	        page = (pageNum + 1);
-	        next = obj.link_format.split( 'PAGE_NUMBER').join( page ).split( 'PAGE_TITLE' ).join( obj.nextTitle );
-	        //str_replace(search,array(page,"Next"),link_format);
-	    }
-	    else
-	    {
-	        //next = ''; // we're on the last page, don't print next link
-	        next = obj.disable_next_format.split( 'PAGE_TITLE' ).join( obj.nextTitle );
-	    }
+		if (pageNum < maxPage-1)
+		{
+			page = (pageNum + 1);
+			next = obj.link_format.split( 'PAGE_NUMBER').join( page ).split( 'PAGE_TITLE' ).join( obj.nextTitle );
+			//str_replace(search,array(page,"Next"),link_format);
+		}
+		else
+		{
+			//next = ''; // we're on the last page, don't print next link
+			next = obj.disable_next_format.split( 'PAGE_TITLE' ).join( obj.nextTitle );
+		}
 
-	    if(maxPage != 1)
-	        return prev + nav + next;
+		if(maxPage != 1)
+			return prev + nav + next;
 
 		return '';
 	}
