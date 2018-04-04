@@ -20,6 +20,12 @@ class Util
 		return document.querySelectorAll( selector );
 	}
 
+	static stopEvent( evt )
+	{
+		evt.stopPropagation();
+		evt.preventDefault();
+	}
+
 	static quoteattr(s, preserveCR)
 	{
 		let pCR = preserveCR ? '&#13;' : '\n';
@@ -48,7 +54,7 @@ class Util
 		//dispatchInputEvent( element );
 	}
 
-	fireInputEvent(selector)
+	static fireInputEvent(selector)
 	{
 		var input = document.querySelector( selector );
 
@@ -68,7 +74,7 @@ class Util
 		input.dispatchEvent( inputEvent );
 	}
 
-	text2html( h )
+	static text2html( h )
 	{
 			var s = document.createElement('span');
 			s.textContent = h;
@@ -89,7 +95,7 @@ class Util
 		   	,disable_prev_format: '<a href="#">PAGE_TITLE</a>'
 	});
 	*/
-	getPagination( obj )
+	static getPagination( obj )
 	{
 		var nav		= '';
 		var prev	= '';
@@ -164,7 +170,7 @@ class Util
 		return '';
 	}
 
-	form2Object(form)
+	static form2Object(form)
 	{
 		if( !form  || !form.elements )
 			return {};
@@ -213,7 +219,7 @@ class Util
 		return formObject;
 	}
 
-	object2form( formObject, form )
+	static object2form( formObject, form )
 	{
 		var checks = ['checkbox','radio'];
 
@@ -274,7 +280,7 @@ class Util
 		}
 	}
 
-	checkFormNativeValidation( form )
+	static checkFormNativeValidation( form )
 	{
 		if( !form.checkValidity() )
 		{
@@ -302,7 +308,7 @@ class Util
 		return true;
 	}
 
-	alert( html, callback )
+	static alert( html, callback )
 	{
 		let div = document.createElement('div');
 		var s =  `
@@ -328,7 +334,7 @@ class Util
 		document.body.appendChild( div );
 	}
 
-	ajax(obj)
+	static ajax(obj)
 	{
 		var xhr		= new XMLHttpRequest();
 		var promise = new Promise(function(resolve,reject)
