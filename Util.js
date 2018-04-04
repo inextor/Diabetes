@@ -30,10 +30,10 @@ class Util
 			.replace(/</g, '&lt;')
 			.replace(/>/g, '&gt;')
 			/*
-			 * 		*         You may add other replacements here for HTML only
-			 * 				*                 (but it's not necessary).
-			 * 						*                         Or for XML, only if the named entities are defined in its DTD.
-			 * 								*                                 */
+			 * 	You may add other replacements here for HTML only
+			 * 	(but it's not necessary).
+			 * 	Or for XML, only if the named entities are defined in its DTD.
+			 */
 			.replace(/\r\n/g, pCR) /* Must be before the next replacement. */
 			.replace(/[\r\n]/g, pCR);
 	}
@@ -95,24 +95,24 @@ class Util
 	    var prev    = '';
 	    var next    = '';
 		var page	= '';
-	
+
 	    var pageNum = parseInt( obj.currentPage, 10);
 	    var maxPage = Math.ceil( parseInt( obj.totalRows, 10 )/ obj.rowsPerPage );
 	    var offset  = ( pageNum - 1) * parseInt( obj.rowsPerPage , 10) ;
 	    var search  = ['PAGE_NUMBER','PAGE_TITLE'];
-	
+
 	    var start   = 0;
 	    var end     = 5;
-	
+
 	    if( pageNum > 5 )
 	    {
 	        start = pageNum - 5;
-	
+
 			if( (maxPage-pageNum) < 5 && maxPage >= 10 )
 			{
 	        	start = maxPage - 10;
 			}
-	
+
 	        if(pageNum < maxPage)
 	        {
 	            var nextPages = maxPage - pageNum;
@@ -126,7 +126,7 @@ class Util
 	        start = 0;
 	        end   = maxPage<10 ? maxPage : 11;
 	    }
-	
+
 	    for(page=start; page <end; page++)
 	    {
 	        //replace = array(page,page);
@@ -145,7 +145,7 @@ class Util
 	        // we're on page one, don't print previous link
 	        prev = obj.disable_prev_format.split( 'PAGE_TITLE' ).join( obj.prevTitle );
 	    }
-	
+
 	    if (pageNum < maxPage-1)
 	    {
 	        page = (pageNum + 1);
@@ -157,10 +157,10 @@ class Util
 	        //next = ''; // we're on the last page, don't print next link
 	        next = obj.disable_next_format.split( 'PAGE_TITLE' ).join( obj.nextTitle );
 	    }
-	
+
 	    if(maxPage != 1)
 	        return prev + nav + next;
-	
+
 		return '';
 	}
 
@@ -168,25 +168,25 @@ class Util
 	{
 		if( !form  || !form.elements )
 			return {};
-	
+
 		var formObject	= {};
-	
+
 		var checks		= ['checkbox', 'radio'];
 		for(var i=0;i<form.elements.length;i++)
 		{
 			var el	= form.elements[ i ];
 			var key = el.name;
-	
+
 			// if an element has no name, it wouldn't be sent to the server
 			if ( !key )
 				continue;
-	
+
 			if (['file', 'reset', 'submit', 'button'].indexOf(el.type) > -1)
 				continue;
-	
+
 			if ( checks.indexOf( el.type ) > -1 && !el.checked)
 				continue;
-	
+
 			if (/\[\]$/.test( key ))
 			{
 				key = key.slice( 0 ,-2 );
@@ -196,7 +196,7 @@ class Util
 					formObject[ key ] = [];
 				}
 			}
-	
+
 			if (formObject[ key ] === undefined )
 			{
 				formObject[ key ] = el.value;
@@ -216,34 +216,34 @@ class Util
 	object2form( formObject, form )
 	{
 		var checks = ['checkbox','radio'];
-	
+
 		for( var i in formObject )
 		{
 			if( formObject[ i ] instanceof Array  )
 			{
 				//TODO
 				var elements = form.querySelectorAll('[name="'+i+'"]');
-	
+
 				if( elements.length !== 0 )
 				{
 					elements = form.querySelectorAll('[name="'+i+'[]"]'); //Investigate this
-	
+
 					if( elements.length === 0 )
 						continue;
-	
+
 					if( checks.indexOf( elements[ 0 ].type ) > -1  )
 					{
 						elements[ 0 ].checked = true;
 					}
-	
+
 				}
 				else
 				{
 					elements = form.querySelectorAll('[name="'+i+'[]"]'); //Investigate this
-	
+
 					if( elements.length === 0 )
 						continue;
-	
+
 					if( checks.indexOf( elements[ 0 ].type ) > -1  )
 					{
 						elements[ 0 ].checked = true;
@@ -255,10 +255,10 @@ class Util
 			else
 			{
 				var element = form.querySelector('[name="'+i+'"][value="'+formObject[ i ]+'"]');
-	
+
 				if( !element )
 					element = form.querySelector('[name="'+i+'"]');
-	
+
 				if( element )
 				{
 					if( checks.indexOf( element.type  ) == -1 )
@@ -281,17 +281,17 @@ class Util
 			if( /iPad|iPhone|iPod/.test(navigator.platform) )
 			{
 				var required = form.querySelectorAll( '[required]' );
-	
+
 				for( var i=0; i<required.length; i++ )
 				{
 					required[ i ].classList.remove('s_invalid');
-	
+
 					if( required[ i ].webkitMatchesSelector(':invalid') )
 					{
 						required[ i ].classList.add('s_invalid');
 						var element = required[ i ];
 						var msg		= required[ i ].getAttribute('data-error-msg') || 'Please verify your data';
-	
+
 						this.alert( msg,()=>{ element.focus();}); // jshint ignore:line
 						return false;
 					}

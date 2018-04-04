@@ -1,5 +1,5 @@
 {
-    "laxcomma"      : true
-    ,"esversion"    : 6 
-    ,"laxbreak"     : true
+	"laxcomma"		: true
+	,"esversion"	: 6
+	,"laxbreak"		: true
 }
