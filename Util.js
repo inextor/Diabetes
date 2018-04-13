@@ -334,6 +334,33 @@ class Util
 		document.body.appendChild( div );
 	}
 
+	static delegateEvent(evtName ,element, seletor, func ) 
+	{
+		element.addEventListener(evtName,(evt)=>
+		{
+			var e		= evt || window.event;
+			var targ	= e.target || e.srcElement;
+			var body	= element;
+
+			var matches	= document.documentElement.matches
+				|| document.documentElement.webkitMatchesSelector
+				|| document.documentElement.mozMatchesSelector
+				|| document.documentElement.oMatchesSelector
+				|| document.documentElement.msMatchesSelector;
+
+			for(var cur = targ; cur != body && cur != window.document; cur=cur.parentNode )
+			{
+				if( matches.call( cur, selector ) )
+				{
+					func.call( cur, evt );
+
+					if( ! evt.bubbles  )
+						return;
+				}
+			}
+		});
+	}
+
 	static ajax(obj)
 	{
 		var xhr		= new XMLHttpRequest();
