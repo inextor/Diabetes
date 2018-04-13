@@ -74,6 +74,10 @@ class Util
 		input.dispatchEvent( inputEvent );
 	}
 
+	static txt2html( h )
+	{
+		return this.text2html( h );
+	}
 	static text2html( h )
 	{
 			var s = document.createElement('span');
@@ -334,7 +338,7 @@ class Util
 		document.body.appendChild( div );
 	}
 
-	static delegateEvent(evtName ,element, seletor, func ) 
+	static delegateEvent(evtName ,element, selector, func ) 
 	{
 		element.addEventListener(evtName,(evt)=>
 		{
