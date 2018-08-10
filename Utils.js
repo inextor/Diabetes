@@ -1,4 +1,4 @@
-class Util
+class Utils
 {
 	static addOnLoad(callback)
 	{
@@ -338,7 +338,7 @@ class Util
 		document.body.appendChild( div );
 	}
 
-	static delegateEvent(evtName ,element, selector, func ) 
+	static delegateEvent(evtName ,element, selector, func )
 	{
 		element.addEventListener(evtName,(evt)=>
 		{
