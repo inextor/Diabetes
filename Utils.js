@@ -331,7 +331,9 @@ class Utils
 		let button = div.querySelector('button');
 		button.addEventListener('click',(evt)=>
 		{
-			callback();
+			if( typeof callback ==="undefined" )
+				callback();
+
 			div.parentNode.removeChild( div );
 		});
 
