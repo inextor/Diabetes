@@ -48,7 +48,7 @@ export default class Util
 	{
 		let element		= document.querySelector( selector );
 
-		let cevent  	= new Event('change',{ bubbles: true, cancelable: false });
+		let cevent		= new Event('change',{ bubbles: true, cancelable: false });
 		cevent.target	= element;
 		element.dispatchEvent( cevent );
 		//dispatchInputEvent( element );
@@ -88,15 +88,15 @@ export default class Util
 	/**
 	getPagination
 	({
-		   	totalRows		   : parameters.data.data.total
-		   	,rowsPerPage		: 10
-		   	,currentPage		: page
-		   	,link_format		: '<a href="/galleryAlbum.html?id='+id+'&page=PAGE_NUMBER">PAGE_TITLE</a>'
-		   	,current_page_format: '<a href="#" class="active">PAGE_TITLE</a>'
-		   	,nextTitle		  : '&gt;&gt;'
-		   	,prevTitle		  : '&lt;&lt;'
-		   	,disable_next_format: '<a href="#">PAGE_TITLE</a>'
-		   	,disable_prev_format: '<a href="#">PAGE_TITLE</a>'
+			totalRows			: parameters.data.data.total
+			,rowsPerPage		: 10
+			,currentPage		: page
+			,link_format		: '<a href="/galleryAlbum.html?id='+id+'&page=PAGE_NUMBER">PAGE_TITLE</a>'
+			,current_page_format: '<a href="#" class="active">PAGE_TITLE</a>'
+			,nextTitle			: '&gt;&gt;'
+			,prevTitle			: '&lt;&lt;'
+			,disable_next_format: '<a href="#">PAGE_TITLE</a>'
+			,disable_prev_format: '<a href="#">PAGE_TITLE</a>'
 	});
 	*/
 	static getPagination( obj )
@@ -106,12 +106,12 @@ export default class Util
 		var next	= '';
 		var page	= '';
 
-		var pageNum = parseInt( obj.currentPage, 10);
-		var maxPage = Math.ceil( parseInt( obj.totalRows, 10 )/ obj.rowsPerPage );
-		var offset  = ( pageNum - 1) * parseInt( obj.rowsPerPage , 10) ;
-		var search  = ['PAGE_NUMBER','PAGE_TITLE'];
+		var pageNum	= parseInt( obj.currentPage, 10);
+		var maxPage	= Math.ceil( parseInt( obj.totalRows, 10 )/ obj.rowsPerPage );
+		var offset	= ( pageNum - 1) * parseInt( obj.rowsPerPage , 10) ;
+		var search	= ['PAGE_NUMBER','PAGE_TITLE'];
 
-		var start   = 0;
+		var start	= 0;
 		var end	 = 5;
 
 		if( pageNum > 5 )
@@ -125,22 +125,22 @@ export default class Util
 
 			if(pageNum < maxPage)
 			{
-				var nextPages = maxPage - pageNum;
-				end	   = nextPages > 5 ? pageNum+5 : pageNum+nextPages;
+				var nextPages	= maxPage - pageNum;
+				end				= nextPages > 5 ? pageNum+5 : pageNum+nextPages;
 			}
 			else
-				end = maxPage;
+				end	= maxPage;
 		}
 		else
 		{
-			start = 0;
-			end   = maxPage<10 ? maxPage : 11;
+			start	= 0;
+			end		= maxPage<10 ? maxPage : 11;
 		}
 
 		for(page=start; page <end; page++)
 		{
 			//replace = array(page,page);
-			var format  = page == pageNum ? obj.current_page_format : obj.link_format;
+			var format	= page == pageNum ? obj.current_page_format : obj.link_format;
 			nav	+= format.split( 'PAGE_NUMBER' ).join( page ).split( 'PAGE_TITLE' ).join( (page+1) );
 			//str_replace( search, replace , format );
 		}
@@ -176,7 +176,7 @@ export default class Util
 
 	static form2Object(form)
 	{
-		if( !form  || !form.elements )
+		if( !form || !form.elements )
 			return {};
 
 		var formObject	= {};
@@ -229,7 +229,7 @@ export default class Util
 
 		for( var i in formObject )
 		{
-			if( formObject[ i ] instanceof Array  )
+			if( formObject[ i ] instanceof Array )
 			{
 				//TODO
 				var elements = form.querySelectorAll('[name="'+i+'"]');
@@ -241,7 +241,7 @@ export default class Util
 					if( elements.length === 0 )
 						continue;
 
-					if( checks.indexOf( elements[ 0 ].type ) > -1  )
+					if( checks.indexOf( elements[ 0 ].type ) > -1 )
 					{
 						elements[ 0 ].checked = true;
 					}
@@ -254,7 +254,7 @@ export default class Util
 					if( elements.length === 0 )
 						continue;
 
-					if( checks.indexOf( elements[ 0 ].type ) > -1  )
+					if( checks.indexOf( elements[ 0 ].type ) > -1 )
 					{
 						elements[ 0 ].checked = true;
 					}
@@ -271,7 +271,7 @@ export default class Util
 
 				if( element )
 				{
-					if( checks.indexOf( element.type  ) == -1 )
+					if( checks.indexOf( element.type ) == -1 )
 					{
 						element.value = formObject[ i ];
 					}
@@ -315,7 +315,7 @@ export default class Util
 	static alert( html, callback )
 	{
 		let div = document.createElement('div');
-		var s =  `
+		var s	= `
 			<div style="position: fixed; top: 0; left: 0; bottom: 0; right: 0; z-index: 499; background-color: rgba( 0,0,0,0.6); pointer-events: all;">
 					<div style="color: #46; background-color: white; border-radius: 5px; min-width: 270px; min-height: 50px; padding: 15px; text-align: center; overflow: hidden; position: fixed; top: 50%; left: 50%;transform: translate(-50%, -50%); z-index: 500; font-size: 16px;">
 						<div>
@@ -360,11 +360,40 @@ export default class Util
 				{
 					func.call( cur, evt );
 
-					if( ! evt.bubbles  )
+					if( ! evt.bubbles )
 						return;
 				}
 			}
 		});
+	}
+
+	getFormData( obj )
+	{
+		let formData = new FormData();
+
+		let serialize = (obj, prefix)=>
+		{
+			let p;
+			let str = [];
+
+			for(p in obj)
+			{
+				if ( obj.hasOwnProperty( p ) )
+				{
+					var v = obj[p];
+					var is_obj = typeof v == "object";
+					var k = prefix ? prefix + "[" + (isNaN(+p) || is_obj ? p : '') + "]" : p;
+
+					if( is_obj )
+						serialize( v, k );
+					else
+						formData.append( k, v );
+				}
+			}
+		};
+
+		serialize(obj,'');
+		return formData;
 	}
 
 	static ajax(obj)
@@ -393,7 +422,7 @@ export default class Util
 				}
 			}
 
-			xhr.withCredentials 	= obj.withCredentials	|| false;
+			xhr.withCredentials		= obj.withCredentials	|| false;
 
 			xhr.responseType		= obj.responseType	|| obj.dataType || '';
 
@@ -455,7 +484,7 @@ export default class Util
 
 						reject({ xhr: xhr, status:xhr.statusText, error: 'Not found error' });
 					}
-					else if(  xhr.status > 400 && xhr.status < 500 )
+					else if( xhr.status > 400 && xhr.status < 500 )
 					{
 						if( obj.error )
 							obj.error( xhr, xhr.statusText, 'System server error' );
@@ -508,7 +537,7 @@ export default class Util
 							if (obj.hasOwnProperty(p))
 							{
 								var v = obj[p];
-							   	var is_obj = typeof v == "object";
+								var is_obj = typeof v == "object";
 								var k = prefix ? prefix + "[" + (isNaN(+p) || is_obj ? p : '') + "]" : p;
 
 								str.push
