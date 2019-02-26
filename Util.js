@@ -367,7 +367,7 @@ export default class Util
 		});
 	}
 
-	getFormData( obj )
+	static getFormData( obj )
 	{
 		let formData = new FormData();
 
