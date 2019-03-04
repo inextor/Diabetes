@@ -20,6 +20,16 @@ export default class Util
 		return elements.find( text == i.textContent );
 	}
 
+	static getAllWithText( selector, text )
+	{
+		let elements = Array.from( document.querySelectorAll( selector ) );
+
+		if( text instanceof RegExp )
+			return elements.filter( i => text.test( i.textContent) );
+
+		return elements.filter( text == i.textContent );
+	}
+
 	static getFirst( selector )
 	{
 		return document.querySelector( selector );
