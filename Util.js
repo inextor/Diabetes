@@ -66,7 +66,7 @@ export default class Util
 
 	static fireInputEvent(selector)
 	{
-		var input = document.querySelector( selector );
+		let input = document.querySelector( selector );
 
 		if( input === null )
 		{
@@ -74,7 +74,7 @@ export default class Util
 			return;
 		}
 
-		var inputEvent = new Event('input',
+		let inputEvent = new Event('input',
 		{
 			"bubbles" 		: true
 			,"cancelable" 	: false
@@ -90,7 +90,7 @@ export default class Util
 	}
 	static text2html( h )
 	{
-			var s = document.createElement('span');
+			let s = document.createElement('span');
 			s.textContent = h;
 			return s.innerHTML.replace(/\n/g,'<br>');
 	}
@@ -189,13 +189,14 @@ export default class Util
 		if( !form || !form.elements )
 			return {};
 
-		var formObject	= {};
+		let formObject	= {};
 
-		var checks		= ['checkbox', 'radio'];
-		for(var i=0;i<form.elements.length;i++)
+		let checks		= ['checkbox', 'radio'];
+
+		for(let i=0;i<form.elements.length;i++)
 		{
-			var el	= form.elements[ i ];
-			var key = el.name;
+			let el	= form.elements[ i ];
+			let key = el.name;
 
 			// if an element has no name, it wouldn't be sent to the server
 			if ( !key )
@@ -235,14 +236,14 @@ export default class Util
 
 	static object2form( formObject, form )
 	{
-		var checks = ['checkbox','radio'];
+		let checks = ['checkbox','radio'];
 
-		for( var i in formObject )
+		for( let i in formObject )
 		{
 			if( formObject[ i ] instanceof Array )
 			{
 				//TODO
-				var elements = form.querySelectorAll('[name="'+i+'"]');
+				let elements = form.querySelectorAll('[name="'+i+'"]');
 
 				if( elements.length !== 0 )
 				{
@@ -274,7 +275,7 @@ export default class Util
 			}
 			else
 			{
-				var element = form.querySelector('[name="'+i+'"][value="'+formObject[ i ]+'"]');
+				let element = form.querySelector('[name="'+i+'"][value="'+formObject[ i ]+'"]');
 
 				if( !element )
 					element = form.querySelector('[name="'+i+'"]');
@@ -300,17 +301,17 @@ export default class Util
 		{
 			if( /iPad|iPhone|iPod/.test(navigator.platform) )
 			{
-				var required = form.querySelectorAll( '[required]' );
+				let required = form.querySelectorAll( '[required]' );
 
-				for( var i=0; i<required.length; i++ )
+				for( let i=0; i<required.length; i++ )
 				{
 					required[ i ].classList.remove('s_invalid');
 
 					if( required[ i ].webkitMatchesSelector(':invalid') )
 					{
 						required[ i ].classList.add('s_invalid');
-						var element = required[ i ];
-						var msg		= required[ i ].getAttribute('data-error-msg') || 'Please verify your data';
+						let element = required[ i ];
+						let msg		= required[ i ].getAttribute('data-error-msg') || 'Please verify your data';
 
 						this.alert( msg,()=>{ element.focus();}); // jshint ignore:line
 						return false;
@@ -325,7 +326,7 @@ export default class Util
 	static alert( html, callback )
 	{
 		let div = document.createElement('div');
-		var s	= `
+		let s	= `
 			<div style="position: fixed; top: 0; left: 0; bottom: 0; right: 0; z-index: 499; background-color: rgba( 0,0,0,0.6); pointer-events: all;">
 					<div style="color: #46; background-color: white; border-radius: 5px; min-width: 270px; min-height: 50px; padding: 15px; text-align: center; overflow: hidden; position: fixed; top: 50%; left: 50%;transform: translate(-50%, -50%); z-index: 500; font-size: 16px;">
 						<div>
@@ -364,7 +365,7 @@ export default class Util
 				|| document.documentElement.oMatchesSelector
 				|| document.documentElement.msMatchesSelector;
 
-			for(var cur = targ; cur != body && cur != window.document; cur=cur.parentNode )
+			for(let cur = targ; cur != body && cur != window.document; cur=cur.parentNode )
 			{
 				if( matches.call( cur, selector ) )
 				{
@@ -390,9 +391,9 @@ export default class Util
 			{
 				if ( obj.hasOwnProperty( p ) )
 				{
-					var v = obj[p];
-					var is_obj = typeof v == "object";
-					var k = prefix ? prefix + "[" + (isNaN(+p) || is_obj ? p : '') + "]" : p;
+					let v = obj[p];
+					let is_obj = typeof v == "object";
+					let k = prefix ? prefix + "[" + (isNaN(+p) || is_obj ? p : '') + "]" : p;
 
 					if( is_obj )
 						serialize( v, k );
@@ -408,10 +409,9 @@ export default class Util
 
 	static ajax(obj)
 	{
-		var xhr		= new XMLHttpRequest();
-		var promise = new Promise(function(resolve,reject)
+		let xhr		= new XMLHttpRequest();
+		let promise = new Promise(function(resolve,reject)
 		{
-			var i;
 
 			xhr.open
 			(
@@ -426,7 +426,7 @@ export default class Util
 
 			if( obj.requestHeaders )
 			{
-				for(i in obj.requestHeaders )
+				for(let i in obj.requestHeaders )
 				{
 					xhr.setRequestHeader( i, obj.requestHeaders[ i ] );
 				}
@@ -526,7 +526,7 @@ export default class Util
 
 			if( obj.data )
 			{
-				for(i=0;i<methods.length;i++)
+				for(let i=0;i<methods.length;i++)
 				{
 					if( obj.data instanceof methods[i] )
 					{
